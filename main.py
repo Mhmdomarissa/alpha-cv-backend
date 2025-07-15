@@ -1,56 +1,34 @@
-from config import QDRANT_URL
-from fastapi import FastAPI, File ,UploadFile
-from cv_parser import extract_text_from_file
-from fastapi.middleware.cors import CORSMiddleware
-import psycopg2
-import requests
+
+from fastapi import FastAPI, UploadFile, File
+import os
+from utils.file_utils import extract_text_from_file, extract_candidate_info
+from utils.vector_utils import create_collection_if_not_exists, store_vector
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+@app.on_event("startup")
+def startup_event():
+    create_collection_if_not_exists()
 
-@app.post("/upload_cvs")
-async def upload_cvs(
-    cv_files: list[UploadFile] = File(...),
-    jd_file: UploadFile = File(...)
-):
-    jd_text = extract_text_from_file(jd_file)
+@app.post("/upload/")
+async def upload_files(files: list[UploadFile] = File(...), jd: UploadFile = File(...)):
+    response = []
+    os.makedirs("tmp", exist_ok=True)
 
-    results = []
+    # Process job description file
+    jd_path = f"tmp/{jd.filename}"
+    with open(jd_path, "wb") as f:
+        f.write(await jd.read())
+    job_text = extract_text_from_file(jd_path)
 
-    for file in cv_files:
-        text = extract_text_from_file(file)
-        name = extract_name(text)
-        title = extract_title(text)
+    for file in files:
+        file_path = f"tmp/{file.filename}"
+        with open(file_path, "wb") as f:
+            f.write(await file.read())
 
-        results.append({
-            "filename": file.filename,
-            "full_name": name,
-            "job_title": title,
-            "content": text
-        })
+        raw_text = extract_text_from_file(file_path)
+        info = extract_candidate_info(raw_text)
+        store_vector(info)
+        response.append(info)
 
-    return {
-        "job_description": jd_text,
-        "candidates": results
-    }
-
-def extract_name(text):
-    import re
-    lines = text.strip().split("\n")
-    for line in lines:
-        if len(line.strip().split()) >= 2 and len(line.strip()) < 40:
-            return line.strip()
-    return "Unknown"
-
-def extract_title(text):
-    for keyword in ["Engineer", "Developer", "Manager", "Analyst"]:
-        if keyword.lower() in text.lower():
-            return keyword
-    return "Unknown"
+    return {"job_description": job_text.strip(), "candidates": response}
