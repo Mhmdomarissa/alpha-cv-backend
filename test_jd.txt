@@ -1,0 +1,42 @@
+Senior Backend Engineer - Remote
+
+Company: TechInnovate Solutions
+Location: Remote (US Time Zones)
+Type: Full-time
+
+About Us:
+TechInnovate Solutions is a leading SaaS company providing AI-powered analytics solutions to Fortune 500 companies. We're looking for a talented Senior Backend Engineer to join our growing team.
+
+Job Description:
+We are seeking an experienced Backend Engineer to design and implement scalable microservices that power our AI analytics platform. You'll work with cutting-edge technologies and collaborate with a distributed team of talented engineers.
+
+Key Responsibilities:
+- Design and develop RESTful APIs and microservices using Python
+- Implement vector search and similarity matching algorithms
+- Optimize database performance and query efficiency
+- Build and maintain CI/CD pipelines
+- Collaborate with frontend engineers to deliver features
+- Mentor junior developers and participate in code reviews
+
+Required Qualifications:
+- 5+ years of experience in backend development
+- Strong proficiency in Python and frameworks like FastAPI or Django
+- Experience with vector databases (Qdrant, Pinecone, or similar)
+- Knowledge of SQL and NoSQL databases
+- Experience with Docker and container orchestration
+- Understanding of microservices architecture
+- Excellent problem-solving and communication skills
+
+Preferred Qualifications:
+- Experience with machine learning and NLP
+- Knowledge of Kubernetes and cloud platforms (AWS/GCP/Azure)
+- Familiarity with sentence transformers and embeddings
+- Experience with real-time data processing
+
+What We Offer:
+- Competitive salary ($150k - $200k)
+- Equity compensation
+- Flexible remote work
+- Health, dental, and vision insurance
+- Professional development budget
+- 4 weeks PTO + holidays
