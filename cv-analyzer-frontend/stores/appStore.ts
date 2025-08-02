@@ -28,14 +28,14 @@ interface AppState {
 
   // Analysis Results
   analysisResults: {
-    jobDescription: string;
+    job_description: string;
     candidates: Array<{
       filename: string;
       status: 'success' | 'error';
       candidate_info?: any;
       message?: string;
     }>;
-    summary?: {
+    summary: {
       total_files: number;
       successful: number;
       failed: number;
